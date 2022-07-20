@@ -1,13 +1,11 @@
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
-import javax.lang.model.type.NullType;
-import java.lang.reflect.Type;
+import java.io.InputStream;
 import java.net.URI;
+import java.net.URL;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -26,6 +24,8 @@ public class App {
         String body = response.body();
 
         System.out.println(body);
+
+        StickerGenerator stickerGenerator = new StickerGenerator();
 
         // get only desirable data - title, poster, rating
 
@@ -56,8 +56,12 @@ public class App {
 
         // show and handle the data
 
-        for (Map<String, String> films : filmList) {
-            System.out.println(films.get("title"));
+        for (Map<String, String> film : filmList) {
+            String imageUrl = film.get("image");
+            String title = film.get("title");
+            InputStream inputStream = new URL(imageUrl).openStream();
+            stickerGenerator.create(inputStream, title + ".png");
+            System.out.println(film.get("title"));
         }
     }
 }
