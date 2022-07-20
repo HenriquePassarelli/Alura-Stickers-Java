@@ -29,30 +29,13 @@ public class App {
 
         // get only desirable data - title, poster, rating
 
-        class FilmList {
-            String title;
-            String image;
-            String imDbRating;
-
-        }
-
-        class DataList {
-            String errorMessage;
-            List<Map<String, String>> items;
-        }
-
         Gson gson = new Gson();
 
-//
-//        DataList test = (DataList) gson.fromJson(body, Map.class);
-//        System.out.println(test);
+        Map data = gson.fromJson(body, Map.class);
 
-        JsonParser parser = new JsonParser();
+        List<Map<String, String>> filmList = (List<Map<String, String>>) data.get("items");
 
-
-        List<Map<String, String>> filmList = parser.parse(body);
-
-//        System.out.println(filmList.size());
+        System.out.println(filmList.size());
 
         // show and handle the data
 
