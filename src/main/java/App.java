@@ -40,7 +40,7 @@ public class App {
         // show and handle the data
 
         for (Map<String, String> film : filmList) {
-            String imageUrl = film.get("image");
+            String imageUrl = film.get("image").replaceAll("(@+)(.*).jpg$","$1.jpg");
             String title = film.get("title");
             InputStream inputStream = new URL(imageUrl).openStream();
             stickerGenerator.create(inputStream, title + ".png");

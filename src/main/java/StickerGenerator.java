@@ -11,8 +11,6 @@ public class StickerGenerator {
     public void create(InputStream inputStream, String FileName) throws IOException {
 
         // read image
-        // InputStream inputStream = new FileInputStream(new File("src/main/java/assets/thumb.jpg"));
-//        InputStream inputStream = new URL("https://m.media-amazon.com/images/M/MV5BMDFkYTc0MGEtZmNhMC00ZDIzLWFmNTEtODM1ZmRlYWMwMWFmXkEyXkFqcGdeQXVyMTMxODk2OTU@.jpg").openStream();
         BufferedImage originalImg = ImageIO.read(inputStream);
 
         // create new image, transparency and  new size
@@ -22,14 +20,14 @@ public class StickerGenerator {
         BufferedImage newImage = new BufferedImage(width, newHeight, BufferedImage.TRANSLUCENT);
 
         // copy original image to new image (in memory)
-        Graphics2D graphics = newImage.createGraphics();
+        Graphics2D graphics = (Graphics2D) newImage.getGraphics();
         graphics.drawImage(originalImg, 0, 0, null);
 
         // type a phrase to the image
-        graphics.drawString("Amazing", 100, newHeight - 100);
-        Font font = new Font(Font.SANS_SERIF, Font.BOLD, 200);
+        Font font = new Font(Font.SANS_SERIF, Font.BOLD, 64);
         graphics.setFont(font);
         graphics.setColor(Color.BLUE);
+        graphics.drawString("Amazing", 100, newHeight - 100);
 
         // write the image to a file
         ImageIO.write(newImage, "png", new File("src/main/java/output/" + FileName));
