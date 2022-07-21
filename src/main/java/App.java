@@ -1,50 +1,27 @@
-import com.google.gson.Gson;
-
 import java.io.InputStream;
-import java.net.URI;
 import java.net.URL;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
 import java.util.List;
-import java.util.Map;
 
 public class App {
     public static void main(String[] args) throws Exception {
 
-        // get api data
-        String url = "https://raw.githubusercontent.com/alexfelipe/imersao-java/json/top250.json";
-        URI address = URI.create(url);
-        HttpClient client = HttpClient.newHttpClient();
+        String urlImdb = "https://api.mocki.io/v2/549a5d8b/Top250Movies";
+        String url = "https://api.nasa.gov/planetary/apod?start_date=2015-09-07&end_date=2015-09-08&api_key=";
 
-        HttpRequest request = HttpRequest.newBuilder(address).GET().build();
+        HttpApi http = new HttpApi();
 
-        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-
-        String body = response.body();
-
-        System.out.println(body);
-
+        String response = http.dataSearch(url);
         StickerGenerator stickerGenerator = new StickerGenerator();
 
-        // get only desirable data - title, poster, rating
+        DataExtractorNasa dataExtractor = new DataExtractorNasa();
 
-        Gson gson = new Gson();
+        List<Content> data = dataExtractor.extractor(response);
 
-        Map data = gson.fromJson(body, Map.class);
-
-        List<Map<String, String>> filmList = (List<Map<String, String>>) data.get("items");
-
-        System.out.println(filmList.size());
-
-        // show and handle the data
-
-        for (Map<String, String> film : filmList) {
-            String imageUrl = film.get("image").replaceAll("(@+)(.*).jpg$","$1.jpg");
-            String title = film.get("title");
+        for (Content film : data) {
+            String imageUrl = film.getImageUrl();
+            String title = film.getTitle();
             InputStream inputStream = new URL(imageUrl).openStream();
             stickerGenerator.create(inputStream, title + ".png");
-            System.out.println(film.get("title"));
         }
     }
 }
