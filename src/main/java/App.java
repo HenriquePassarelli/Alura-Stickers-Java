@@ -5,8 +5,8 @@ import java.util.List;
 public class App {
     public static void main(String[] args) throws Exception {
 
-        String urlImdb = "https://api.mocki.io/v2/549a5d8b/Top250Movies";
-        String url = "https://api.nasa.gov/planetary/apod?start_date=2015-09-07&end_date=2015-09-08&api_key=";
+//        String urlImdb = "https://api.mocki.io/v2/549a5d8b/Top250Movies"; // API not working at the moment
+        String url = "https://api.nasa.gov/planetary/apod?start_date=2015-09-07&end_date=2015-09-08&api_key=DEMO_KEY";
 
         HttpApi http = new HttpApi();
 
